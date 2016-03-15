@@ -1,26 +1,30 @@
 'use strict';
 
 var express = require('express');
-var mongo = require('mongodb');
 var routes = require('./app/routes/index.js');
+var mongo = require('mongodb').MongoClient;
 
 var app = express();
+require('dotenv').config();
+var port = process.env.PORT || 8080;
+var path = process.cwd();
 
-mongo.connect('mongodb://localhost:27017/clementinejs', function (err, db) {
+mongo.connect(process.env.MONGO_URI, function(err, db) {
+	if (err) {
+		throw new Error('DB failed to connect');
+	} else {
+		console.log('Mongo DB successfuly connected on port 27017');
+	}
 
-   if (err) {
-      throw new Error('Database failed to connect!');
-   } else {
-      console.log('Successfully connected to MongoDB on port 27017.');
-   }
+	app.use('/controllers', express.static(path + '/app/controllers'));
+	app.use('/public', express.static(path + '/public'));
 
-   app.use('/public', express.static(process.cwd() + '/public'));
-   app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
+	routes(app, db);
 
-   routes(app, db);
-
-   app.listen(3000, function () {
-      console.log('Node.js listening on port 3000...');
-   });
+	app.listen(port,  function () {
+		console.log('Node.js listening on port ' + port + '...');
+	});
 
 });
+
+module.exports = app;
