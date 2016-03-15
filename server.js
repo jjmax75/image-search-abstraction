@@ -3,6 +3,7 @@
 var express = require('express');
 var routes = require('./app/routes/index.js');
 var mongo = require('mongodb').MongoClient;
+var imageSearch = require('node-google-image-search');
 
 var app = express();
 require('dotenv').config();
