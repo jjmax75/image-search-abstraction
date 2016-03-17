@@ -11,9 +11,9 @@ function SearchHandler(db) {
   this.searchImages = function(req, res) {
 
     var searchTerm = req.params.searchTerm;
-    // TODO offset param :offset
+    var offset = req.query.offset || 0;
 
-    imageSearch(searchTerm, displayResults);
+    imageSearch(searchTerm, displayResults, offset);
 
     function displayResults(results) {
       var filteredResults = results.map(function(result) {
