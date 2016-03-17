@@ -9,7 +9,7 @@ function SearchHandler(db) {
   var searchesDb = db.collection('searches');
 
   this.searchImages = function(req, res) {
-    // TODO spaces not allowed in URI yet
+
     var searchTerm = req.params.searchTerm;
     // TODO offset param :offset
 
