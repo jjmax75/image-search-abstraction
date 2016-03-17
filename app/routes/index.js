@@ -15,4 +15,7 @@ module.exports = function (app, db) {
 
 	app.route('/api/imagesearch/:searchTerm')
 		.get(searchHandler.searchImages);
+
+	app.route('/api/latest/imagesearch')
+		.get(searchHandler.latestSearches);
 };

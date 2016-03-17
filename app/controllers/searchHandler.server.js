@@ -5,7 +5,6 @@ var imageSearch = require('node-google-image-search');
 
 function SearchHandler(db) {
 
-  // TODO setup db
   var searchesDb = db.collection('searches');
 
   this.searchImages = function(req, res) {
@@ -13,6 +12,17 @@ function SearchHandler(db) {
     var searchTerm = req.params.searchTerm;
     var offset = req.query.offset || 0;
 
+    // Add search term and time to DB
+    var newSearch = {
+      "term": searchTerm,
+      "when": new Date().toISOString()
+    };
+
+    searchesDb.insertOne(newSearch, function(err, result) {
+      if (err) console.error(err);
+    });
+
+    // use node-google-image-search to perform search
     imageSearch(searchTerm, displayResults, offset);
 
     function displayResults(results) {
@@ -27,6 +37,25 @@ function SearchHandler(db) {
 
       res.json(filteredResults);
     }
+  };
+
+  this.latestSearches = function(req, res) {
+    var results = [];
+    searchesDb.find(
+      {},
+      {_id: false},
+      function (err, response) {
+        if (err) console.error(err);
+
+        response.on('data', function(item) {
+          results.push(item);
+        });
+
+        response.on('end', function() {
+          res.json(results);
+        });
+      }
+    );
   };
 }
 

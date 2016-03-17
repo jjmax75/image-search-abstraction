@@ -16,6 +16,21 @@ mongo.connect(process.env.MONGO_URI, function(err, db) {
 		console.log('Mongo DB successfuly connected on port 27017');
 	}
 
+	var searchesCollection = db.collection('searches');
+
+	searchesCollection.find().count(function(err, count) {
+		if (err) throw err;
+
+		if (count === 0) {
+			console.log('Creating capped collection...');
+      db.createCollection('searches',{
+				'capped': true,
+        'size': 1000,
+				'max': 10
+			});
+		}
+	});
+
 	app.use('/controllers', express.static(path + '/app/controllers'));
 	app.use('/public', express.static(path + '/public'));
 

@@ -19,7 +19,22 @@
 
     <div class="wrap">
         <main role="main">
-          
+          <h2>An API to return image search results from Google</h2>
+          <h3>Usage</h3>
+          <ul>
+            <li><p>/api/imagesearch/&lt;search term&gt; returns a list json object of 10 images for that serch term</p>
+            <p>You can optionally add a ?offset=x parameter to return results from the index x</p>
+            <p>Examples:
+              <br /><a href='/api/imagesearch/free code camp'>/api/imagesearch/free code camp</a>
+              <br /><a href='/api/imagesearch/free code camp?offset=34'>/api/imagesearch/free code camp?offest=34</a>
+            </p>
+            </li>
+            <li><p>/api/latest/imagesearch returns the 10 most recent searches</p>
+            <p>Example:
+              <br /><a href="/api/latest/imagesearch">/api/latest/imagesearch</a>
+            </p>
+            </li>
+          </ul>
         </main>
     </div>
 
